@@ -250,6 +250,7 @@ for img in image_elements:
 
 print("All images downloaded successfully!")
 #The attached file called unemployment-rate.csv contains a list of employment ratios for various countries for various years. Each entry looks like this
+#Write a command line program called statistics.py which should accept an input file and the following command line parameters
 import argparse
 import csv
 
