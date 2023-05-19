@@ -249,3 +249,39 @@ for img in image_elements:
         counter += 1
 
 print("All images downloaded successfully!")
+#The attached file called unemployment-rate.csv contains a list of employment ratios for various countries for various years. Each entry looks like this
+import argparse
+import csv
+
+def calculate_statistics(data, country, operation, from_year, to_year):
+    filtered_data = [row for row in data if row['Country'] == country and from_year <= int(row['Year']) <= to_year]
+    values = [float(row['Value']) for row in filtered_data]
+
+    if operation == 'min':
+        result = min(values)
+    elif operation == 'max':
+        result = max(values)
+    else:
+        result = sum(values) / len(values)
+
+    return result
+
+def main():
+    parser = argparse.ArgumentParser(prog='statistics.py', description='Perform operations on data')
+    parser.add_argument('--country', required=True, help='Country to perform operation for')
+    parser.add_argument('-o', choices=['avg', 'min', 'max'], default='avg', help='Operation to perform on dates')
+    parser.add_argument('--from', dest='from_year', type=int, required=True, help='Starting year (inclusive)')
+    parser.add_argument('--to', dest='to_year', type=int, required=True, help='Ending year (inclusive)')
+    parser.add_argument('input_file', help='Input file path')
+
+    args = parser.parse_args()
+
+    with open(args.input_file, 'r') as file:
+        reader = csv.DictReader(file)
+        data = list(reader)
+
+    result = calculate_statistics(data, args.country, args.o, args.from_year, args.to_year)
+    print(f"Result: {result}")
+
+if __name__ == '__main__':
+    main()
